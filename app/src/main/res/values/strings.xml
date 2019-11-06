@@ -1,0 +1,19 @@
+<resources>
+    <string name="app_name">MyAnnuallyTasks</string>
+    <string name="idlog_in">log_in</string>
+    <string name="idusername">username</string>
+    <string name="idpassword">password</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+
+
+    <string-array name="planets_array">
+        <item>ToDo</item>
+        <item>Doing</item>
+        <item>Done</item>
+
+    </string-array>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+</resources>
