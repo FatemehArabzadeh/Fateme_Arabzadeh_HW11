@@ -15,7 +15,9 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.UUID;
 import org.greenrobot.greendao.annotation.Generated;
-
+import org.greenrobot.greendao.annotation.ToOne;
+import org.greenrobot.greendao.DaoException;
+import org.greenrobot.greendao.annotation.NotNull;
 
 
 @Entity(nameInDb = "Task")
@@ -28,6 +30,10 @@ public class Task {
     @Index(unique = true)
     @Convert(converter = UuidConverter.class, columnType = String.class)
     private UUID id;
+
+    private long personId;
+    @ToOne(joinProperty = "personId")
+    private Person person;
 
    /* @Property(nameInDb = "id_user")
     @Index(unique = true)
@@ -53,6 +59,17 @@ public class Task {
 
     @Property(nameInDb = "time")
     Date mTime;
+
+    /** Used to resolve relations */
+    @Generated(hash = 2040040024)
+    private transient DaoSession daoSession;
+
+    /** Used for active entity operations. */
+    @Generated(hash = 1469429066)
+    private transient TaskDao myDao;
+
+    @Generated(hash = 1154009267)
+    private transient Long person__resolvedKey;
 
     public Task(String mTitle, String mdetaile, State mState, Date mDate, Date mTime) {
         this.mTitle = mTitle;
@@ -113,17 +130,20 @@ public class Task {
 //        mDate = new Date();  زمان همان لحطه
     }
 
-    @Generated(hash = 1283240592)
-    public Task(Long _id, UUID id, String mTitle, String mdetaile, State mState, Date mDate,
-            Date mTime) {
+    @Generated(hash = 269433505)
+    public Task(Long _id, UUID id, long personId, String mTitle, String mdetaile,
+            State mState, Date mDate, Date mTime) {
         this._id = _id;
         this.id = id;
+        this.personId = personId;
         this.mTitle = mTitle;
         this.mdetaile = mdetaile;
         this.mState = mState;
         this.mDate = mDate;
         this.mTime = mTime;
     }
+
+    
 
   ///////////////
 
@@ -181,5 +201,89 @@ public class Task {
 
     public void setMTime(Date mTime) {
         this.mTime = mTime;
+    }
+
+    public long getPersonId() {
+        return this.personId;
+    }
+
+    public void setPersonId(long personId) {
+        this.personId = personId;
+    }
+
+    /** To-one relationship, resolved on first access. */
+    @Generated(hash = 1944524480)
+    public Person getPerson() {
+        long __key = this.personId;
+        if (person__resolvedKey == null || !person__resolvedKey.equals(__key)) {
+            final DaoSession daoSession = this.daoSession;
+            if (daoSession == null) {
+                throw new DaoException("Entity is detached from DAO context");
+            }
+            PersonDao targetDao = daoSession.getPersonDao();
+            Person personNew = targetDao.load(__key);
+            synchronized (this) {
+                person = personNew;
+                person__resolvedKey = __key;
+            }
+        }
+        return person;
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1382592572)
+    public void setPerson(@NotNull Person person) {
+        if (person == null) {
+            throw new DaoException(
+                    "To-one property 'personId' has not-null constraint; cannot set to-one to null");
+        }
+        synchronized (this) {
+            this.person = person;
+            personId = person.getId();
+            person__resolvedKey = personId;
+        }
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#delete(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 128553479)
+    public void delete() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.delete(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#refresh(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 1942392019)
+    public void refresh() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.refresh(this);
+    }
+
+    /**
+     * Convenient call for {@link org.greenrobot.greendao.AbstractDao#update(Object)}.
+     * Entity must attached to an entity context.
+     */
+    @Generated(hash = 713229351)
+    public void update() {
+        if (myDao == null) {
+            throw new DaoException("Entity is detached from DAO context");
+        }
+        myDao.update(this);
+    }
+
+    /** called by internal mechanisms, do not call yourself. */
+    @Generated(hash = 1442741304)
+    public void __setDaoSession(DaoSession daoSession) {
+        this.daoSession = daoSession;
+        myDao = daoSession != null ? daoSession.getTaskDao() : null;
     }
 }
